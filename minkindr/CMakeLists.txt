@@ -1,25 +1,38 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(minkindr)
+cmake_minimum_required (VERSION 2.8)
 
-find_package(catkin_simple REQUIRED)
-catkin_simple(ALL_DEPS_REQUIRED)
+project(kindr)
 
-find_package(Threads)
+add_definitions(-std=c++14)
 
-catkin_add_gtest(${PROJECT_NAME}_tests 
-  test/test-main.cc
-  test/test-rotation.cc
-  test/test-sim3.cc
-  test/test-transformation.cc
-  test/test-transformation-2d.cc
-)
-target_link_libraries(${PROJECT_NAME}_tests ${catkin_LIBRARIES} 
-                                            ${CMAKE_THREAD_LIBS_INIT})
+find_package(Eigen3 REQUIRED)
 
-# Add all files to show up in QtCreator.
-FILE(GLOB_RECURSE LibFiles "include/*")
-add_custom_target(headers SOURCES ${LibFiles})
+include_directories(include)
+include_directories(${EIGEN3_INCLUDE_DIR})
 
-cs_install()
-cs_export()
 
+install(DIRECTORY include/kindr DESTINATION include)
+
+export(PACKAGE kindr)
+
+# Create variable for the local build tree
+get_property(kindr_include_dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+
+# Configure config file for local build tree
+configure_file(kindrConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/kindrConfig.cmake" @ONLY)
+
+# 2- installation build #
+
+# Change the include location for the case of an install location
+set(kindr_include_dirs ${CMAKE_INSTALL_PREFIX}/include ${EIGEN3_INCLUDE_DIR})
+
+message("include_dirs ${kindr_include_dirs}")
+
+# We put the generated file for installation in a different repository (i.e., ./CMakeFiles/)
+configure_file(kindrConfig.cmake.in
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/kindrConfig.cmake" @ONLY)
+
+install(FILES
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/kindrConfig.cmake"
+  DESTINATION share/kindr/cmake COMPONENT dev)
+ 
