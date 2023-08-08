@@ -1,10 +1,24 @@
 cmake_minimum_required (VERSION 2.8)
 
+if(NOT WIN32)
+    set(HUNTER_CONFIGURATION_TYPES "Release" CACHE STRING "Hunter dependencies list of build configurations")
+endif()
+set(HUNTER_STATUS_DEBUG ON)
+
+include("HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.322.tar.gz"
+    SHA1 "cb0ea1f74f4a2c49a807de34885743495fccccbe"
+    LOCAL # Local config for dependencies
+)
+
 project(kindr)
 
 add_definitions(-std=c++14)
 
-find_package(Eigen3 REQUIRED)
+hunter_add_package(Eigen)
+
+find_package(Eigen3 CONFIG REQUIRED)
 
 include_directories(include)
 include_directories(${EIGEN3_INCLUDE_DIR})

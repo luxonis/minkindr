@@ -4,6 +4,8 @@
 *.o
 *.obj
 
+build
+.vscode
 # Compiled Dynamic libraries
 *.so
 *.dylib
