@@ -1,20 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
-
-if(NOT WIN32)
-    set(HUNTER_CONFIGURATION_TYPES "Release" CACHE STRING "Hunter dependencies list of build configurations")
-endif()
-set(HUNTER_STATUS_DEBUG ON)
-
-include("HunterGate.cmake")
-HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.322.tar.gz"
-    SHA1 "cb0ea1f74f4a2c49a807de34885743495fccccbe"
-    LOCAL # Local config for dependencies
-)
-
-project(kindr)
-
-add_definitions(-std=c++14)
+cmake_minimum_required (VERSION 3.4)
 
 hunter_add_package(Eigen)
 
@@ -41,6 +25,8 @@ configure_file(kindrConfig.cmake.in
 set(kindr_include_dirs ${CMAKE_INSTALL_PREFIX}/include ${EIGEN3_INCLUDE_DIR})
 
 message("include_dirs ${kindr_include_dirs}")
+message("Conifg dir ${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}")
+message("CMAKE_INSTALL_PREFIX dir ${CMAKE_INSTALL_PREFIX}")
 
 # We put the generated file for installation in a different repository (i.e., ./CMakeFiles/)
 configure_file(kindrConfig.cmake.in
