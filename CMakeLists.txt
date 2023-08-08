@@ -11,7 +11,7 @@ HunterGate(
     LOCAL # Local config for dependencies
 )
 
-project(kindr)
+project(kindr VERSION 1.0.0)
 
 add_definitions(-std=c++14)
 
