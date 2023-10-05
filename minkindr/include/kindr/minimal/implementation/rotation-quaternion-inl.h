@@ -562,8 +562,7 @@ bool RotationQuaternionTemplate<Scalar>::isValidRotationMatrix(
       RotationMatrix::Identity()).cwiseAbs().maxCoeff() > threshold) {
     VLOG(200) << matrix * matrix.transpose();
     VLOG(200) << matrix * matrix.transpose() - RotationMatrix::Identity();
-    VLOG(200) << "Max Coeff is -> " << (matrix * matrix.transpose() -
-      RotationMatrix::Identity()).cwiseAbs().maxCoeff() << " Threshold -> " << threshold;
+    VLOG(200) << "Max Coeff is -> " << (matrix * matrix.transpose() - RotationMatrix::Identity()).cwiseAbs().maxCoeff() << " Threshold -> " << threshold;
     return false;
   }
   return true;
